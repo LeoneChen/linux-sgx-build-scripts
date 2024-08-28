@@ -1,0 +1,16 @@
+diff --git a/linux/installer/deb/local_repo_tool/conf/distributions b/linux/installer/deb/local_repo_tool/conf/distributions
+index 70a0683a..717b51c2 100644
+--- a/linux/installer/deb/local_repo_tool/conf/distributions
++++ b/linux/installer/deb/local_repo_tool/conf/distributions
+@@ -69,3 +69,11 @@ Architectures: amd64
+ Components: main
+ Description: ubuntu/mantic repository for SGX PSW
+ DebIndices: Packages .
++
++Origin: Intel Corporation
++Label: Intel Corporation
++Codename: noble
++Architectures: amd64
++Components: main
++Description: ubuntu/noble repository for SGX PSW
++DebIndices: Packages .
