@@ -84,6 +84,7 @@ case "${CMD}" in
         popd
         ;;
     "build")
+        sudo pwd
         if [ $DEBUG -eq 1 ]; then
             export DEB_BUILD_OPTIONS=nostrip
             COMMON_FLAGS="DEBUG=1"
