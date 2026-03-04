@@ -113,11 +113,6 @@ case "${CMD}" in
             sudo dpkg -i linux/installer/deb/libsgx-urts/libsgx-urts_*_amd64.deb linux/installer/deb/libsgx-enclave-common/libsgx-enclave-common_*_amd64.deb
             echo "[+] -> deb_local_repo" >> ${OUTPUT_PATH}
             make deb_local_repo ${COMMON_FLAGS}
-
-            echo "[+] Install SGX PSW" >> ${OUTPUT_PATH}
-            sudo cp -r linux/installer/deb/sgx_debian_local_repo /opt/sgx_debian_local_repo
-            sudo apt-get update
-            sudo apt-get install -y libsgx-.* sgx-.*
         popd
         ;;
     "uninstall")
@@ -154,7 +149,12 @@ case "${CMD}" in
         fi
         ;;
     "install")
-        sudo ${TARGET_DIR}/linux/installer/bin/sgx_linux_x64_sdk_*.bin --prefix ${INSTALL_DIR}
+        if [ ! -d "${INSTALL_DIR}" ]; then
+            echo "[+] Install SGX SDK at ${INSTALL_DIR}" >> ${OUTPUT_PATH}
+            sudo ${TARGET_DIR}/linux/installer/bin/sgx_linux_x64_sdk_*.bin --prefix ${INSTALL_DIR}
+        fi
+        echo "[+] Install SGX PSW" >> ${OUTPUT_PATH}
+        sudo cp -r ${TARGET_DIR}/linux/installer/deb/sgx_debian_local_repo /opt/sgx_debian_local_repo
         sudo apt-get update
         sudo apt-get install -y libsgx-.* sgx-.*
         ;;
