@@ -113,6 +113,7 @@ case "${CMD}" in
             sudo dpkg -i linux/installer/deb/libsgx-urts/libsgx-urts_*_amd64.deb linux/installer/deb/libsgx-enclave-common/libsgx-enclave-common_*_amd64.deb
             echo "[+] -> deb_local_repo" >> ${OUTPUT_PATH}
             make deb_local_repo ${COMMON_FLAGS}
+            sudo cp -r ${TARGET_DIR}/linux/installer/deb/sgx_debian_local_repo /opt/sgx_debian_local_repo
         popd
         ;;
     "uninstall")
@@ -126,11 +127,11 @@ case "${CMD}" in
 
         echo "[!] Remove SGX PSW" >> ${OUTPUT_PATH}
         sudo apt-get purge libsgx-.* sgx-.* -y
-        sudo rm -rf /opt/sgx_debian_local_repo
         ;;
     "unprepare")
         echo "[!] Remove toolset and apt sources" >> ${OUTPUT_PATH}
         sudo rm -f /usr/local/bin/{ar,as,ld,ld.gold,objcopy,objdump,ranlib} /etc/apt/sources.list.d/intel-sgx.list
+        sudo rm -rf /opt/sgx_debian_local_repo
 
         pushd ${TARGET_DIR}
             echo "[!] Restore ${TARGET_DIR}" >> ${OUTPUT_PATH}
@@ -154,7 +155,6 @@ case "${CMD}" in
             sudo ${TARGET_DIR}/linux/installer/bin/sgx_linux_x64_sdk_*.bin --prefix ${INSTALL_DIR}
         fi
         echo "[+] Install SGX PSW" >> ${OUTPUT_PATH}
-        sudo cp -r ${TARGET_DIR}/linux/installer/deb/sgx_debian_local_repo /opt/sgx_debian_local_repo
         sudo apt-get update
         sudo apt-get install -y libsgx-.* sgx-.*
         ;;
